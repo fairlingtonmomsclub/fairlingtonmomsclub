@@ -11,7 +11,7 @@ markup:
 
 params:
   BookTheme: auto
-  BookLogo: favicon.png
+#  BookLogo: favicon.png
   description: Fairlington Moms' Club in Arlington, VA
 #  images: 
 #    - share/school.jpg
