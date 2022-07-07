@@ -1,0 +1,11 @@
+<div class=title>
+    <article class="markdown">
+        <h1>
+        {{ partial "docs/title.html" . }}
+        </h1>
+        {{ if eq .Type "posts" }}
+            {{ partial "docs/post-meta" . }}
+        {{ end }}
+        <hr>
+    </article>
+</div>

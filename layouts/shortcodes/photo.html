@@ -1,0 +1,16 @@
+{{- $alt := .Get "alt" -}}
+
+{{ $original := (.Page.Resources.ByType "image").GetMatch (printf "*%s*" (.Get "src")) }}
+{{ with $original }}
+{{ $small := .Resize "360x webp" }}
+
+<a href="{{ $original.RelPermalink }}">
+    <img 
+        src="{{ $small.RelPermalink }}"
+        width="{{ $small.Width }}"
+        height="{{ $small.Height }}"
+        alt="{{ if $alt }}{{ $alt }}{{ end }}"
+    >
+</a>
+
+{{ end }}

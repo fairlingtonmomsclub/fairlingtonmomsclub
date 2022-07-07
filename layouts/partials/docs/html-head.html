@@ -1,0 +1,70 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="{{ default .Description }}">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark">
+
+{{ template "_internal/twitter_cards.html" . }}
+<meta name="twitter:site" content="{{ .Site.Params.twitter }}" />
+<meta name="twitter:creator" content="{{ .Site.Params.twitter }}" />
+
+{{- template "_internal/opengraph.html" . -}}
+<!--<meta property="og:image" content="{{.Site.BaseURL}}{{ .Site.Params.og_image }}">-->
+<!--<meta property="og:image:secure" content="{{.Site.BaseURL}}{{ .Site.Params.images }}" />-->
+<meta property="og:site_name" content="{{ .Site.Params.title }}" />
+<meta name="fb_admins_meta_tag" content="{{ .Site.Params.fb }}" />
+<meta property="fb:admins" content="{{ .Site.Params.fb }}" />
+
+<title>{{ partial "docs/html-head-title" . }}</title>
+
+{{- $manifest := resources.Get "manifest.json" | resources.ExecuteAsTemplate "manifest.json" . }}
+<link rel="manifest" href="{{ $manifest.RelPermalink }}">
+<link rel="icon" href="{{ "favicon.png" | relURL }}" type="image/x-icon">
+<!--<link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">-->
+<!--
+{{- range .Translations }}
+  <link rel="alternate" hreflang="{{ default .Language.Lang .Site.LanguageCode }}" href="{{ .Permalink }}" title="{{ partial "docs/title" . }}">
+{{- end -}}-->
+
+{{- if .IsTranslated -}}
+  {{ range .AllTranslations }}
+    <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" />
+  {{- end -}}
+  {{ range first 1 .AllTranslations }}
+    <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}" />
+  {{- end -}}
+{{ end }}
+
+<!-- Theme stylesheet, you can customize scss by creating `assets/custom.scss` in your website -->
+{{- $styles := resources.Get "book.scss" | resources.ExecuteAsTemplate "book.scss" . | resources.ToCSS | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $styles.RelPermalink }}" {{ template "integrity" $styles }}>
+
+{{- if default true .Site.Params.BookSearch -}}
+  {{- $searchJSFile := printf "%s.search.js" .Language.Lang }}
+  {{- $searchJS := resources.Get "search.js" | resources.ExecuteAsTemplate $searchJSFile . | resources.Minify | resources.Fingerprint }}
+  <script defer src="{{ "flexsearch.min.js" | relURL }}"></script>
+  <script defer src="{{ $searchJS.RelPermalink }}" {{ template "integrity" $searchJS }}></script>
+{{ end -}}
+
+{{- if .Site.Params.BookServiceWorker -}}
+  {{- $swJS := resources.Get "sw-register.js" | resources.ExecuteAsTemplate "sw.js" . | resources.Minify | resources.Fingerprint }}
+  <script defer src="{{ $swJS.RelPermalink }}" {{ template "integrity" $swJS }}></script>
+{{ end -}}
+
+{{- template "_internal/google_analytics.html" . -}}
+
+<!-- RSS -->
+{{- with .OutputFormats.Get "rss" -}}
+  {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+{{ end -}}
+
+{{ "<!--" | safeHTML }}
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+{{ "-->" | safeHTML }}
+
+{{- define "integrity" -}}
+  {{- if (urls.Parse .Permalink).Host -}}
+    integrity="{{ .Data.Integrity }}" crossorigin="anonymous"
+  {{- end -}}
+{{- end -}}

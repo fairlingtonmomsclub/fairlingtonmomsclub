@@ -1,0 +1,33 @@
+baseURL: https://www.fairlingtonmomsclub.org/
+languageCode: en-us
+title: Fairlington Moms' Club
+theme: 
+- hugo-book
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
+params:
+  BookTheme: auto
+  BookLogo: favicon.png
+  description: Fairlington Moms' Club in Arlington, VA
+#  images: 
+#    - share/school.jpg
+#  twitter: AbingdonPTA
+#  fb: AbingdonElementaryPTA
+#  title: Abingdon PTA
+  BookSection: '*'
+
+permalinks:
+  about: /:sections[1:]/:filename/
+  posts: /:year/:month/:slug/
+
+copyright: Fairlington Moms' Club
+defaultContentLanguage: en
+languages:
+  en:
+    weight: 1
+    languageName: English
+    title: Fairlington Moms' Club
