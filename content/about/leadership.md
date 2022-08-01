@@ -1,6 +1,6 @@
 ---
 title: Leadership
-description: Leadership of the Fairlington Moms' Club.
+summary: Leadership of the Fairlington Moms' Club.
 weight: 20
 ---
 

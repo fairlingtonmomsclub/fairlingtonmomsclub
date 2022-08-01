@@ -14,10 +14,10 @@
     </h2>
     {{ partial "docs/post-meta" . }}
     <p>
-      {{- .Description -}}<!--
+      {{- .Summary -}}
       {{ if .Truncated }}
         <a href="{{ .RelPermalink }}">...</a>
-      {{ end }}-->
+      {{ end }}
     </p>
   </article>
   {{ end }}
